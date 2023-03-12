@@ -24,13 +24,32 @@ export class User extends Model<User, UserCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     password: string;
 
-    @ApiProperty({example: "false", description: "Статус користувача"})
-    @Column({type: DataType.BOOLEAN, defaultValue: false})
-    banned: boolean;
+    @ApiProperty({example: "mail@mail.com", description: "Пошта"})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
+    surname: string;
 
-    @ApiProperty({example: "Ви були забанені за...", description: "Причина бану"})
-    @Column({type: DataType.STRING, allowNull: true})
-    banReason: string;
+    @ApiProperty({example: "mail@mail.com", description: "Пошта"})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
+    name: string;
+
+    @ApiProperty({example: "mail@mail.com", description: "Пошта"})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
+    fatherhood: string;
+
+    @ApiProperty({example: "mail@mail.com", description: "Пошта"})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
+    unit: string;
+
+
+    @ApiProperty({example: "mail@mail.com", description: "Пошта"})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
+    rank: string;
+
+
+    @ApiProperty({example: "mail@mail.com", description: "Пошта"})
+    @Column({type: DataType.STRING, unique: false, allowNull: false})
+    contactNumber: string;
+
 
     @BelongsToMany(() => Role, () => UserRoles)
     roles: Role[]

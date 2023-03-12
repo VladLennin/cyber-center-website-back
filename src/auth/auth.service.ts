@@ -1,5 +1,5 @@
 import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
-import {CreateUserDto} from "../users/create-user.dto";
+import {CreateUserDto} from "../users/dto/create-user.dto";
 import {UsersService} from "../users/users.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs"
@@ -22,7 +22,6 @@ export class AuthService {
         if (candidate) {
             throw new HttpException("Користувач з таким email вже існує", HttpStatus.BAD_REQUEST)
         }
-
         const hashPassword = await bcrypt.hash(dto.password, 5)
         const user = await this.usersService.createUser({...dto, password: hashPassword})
         return this.generateToken(user)
