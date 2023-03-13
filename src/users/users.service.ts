@@ -31,6 +31,11 @@ export class UsersService {
         return user
     }
 
+    async getUserByPk(id: string) {
+        const user = await this.userRepository.findByPk(id)
+        return user
+    }
+
 
     async addRole(dto: AddRoleDto) {
         const user = await this.userRepository.findByPk(dto.userId)
@@ -42,5 +47,6 @@ export class UsersService {
         throw new HttpException("Користувач або роль не знайдені", HttpStatus.NOT_FOUND)
 
     }
+
 
 }

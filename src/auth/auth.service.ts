@@ -1,51 +1,79 @@
-import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
-import {CreateUserDto} from "../users/dto/create-user.dto";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {UsersService} from "../users/users.service";
-import {JwtService} from "@nestjs/jwt";
-import * as bcrypt from "bcryptjs"
-import {User} from "../users/users.model";
+import * as bcrypt from "bcryptjs";
+import {CreateUserDto} from "../users/dto/create-user.dto";
+import {TokenService} from "../token/token.service";
+import {UserDto} from "../users/dto/user-dto";
+
 
 @Injectable()
 export class AuthService {
-
-    constructor(private usersService: UsersService,
-                private jwtService: JwtService) {
+    constructor(
+        private userService: UsersService,
+        private tokenService: TokenService
+    ) {
     }
 
-    async login(dto: CreateUserDto) {
-        const user: User = await this.validateUser(dto)
-        return this.generateToken(user)
-    }
 
     async registration(dto: CreateUserDto) {
-        const candidate = await this.usersService.getUserByEmail(dto.email)
+        let candidate = await this.userService.getUserByEmail(dto.email)
         if (candidate) {
-            throw new HttpException("Користувач з таким email вже існує", HttpStatus.BAD_REQUEST)
+            throw new HttpException(`Користувач з  ${dto.email} вже існує`, HttpStatus.BAD_REQUEST)
         }
-        const hashPassword = await bcrypt.hash(dto.password, 5)
-        const user = await this.usersService.createUser({...dto, password: hashPassword})
-        return this.generateToken(user)
+        const hashPassword = await bcrypt.hash(dto.password, 5);
+
+        const user = await this.userService.createUser({...dto, password: hashPassword})
+
+        const userDto = new UserDto(user)
+        const tokens = this.tokenService.generateTokens({...userDto});
+        await this.tokenService.saveToken(userDto.id,tokens.refreshToken);
+
+        return {...tokens, user}
     }
 
-    private async generateToken(user: User) {
-        const payload = {email: user.email, id: user.id, roles: user.roles}
-        return {
-            token: this.jwtService.sign(payload)
-        }
-    }
-
-    private async validateUser(userDto: CreateUserDto) {
-        const user: User = await this.usersService.getUserByEmail(userDto.email)
+    async login(email, password) {
+        const user = await this.userService.getUserByEmail(email)
         if (!user) {
-            throw new UnauthorizedException({message: "Такого користувача не існує"})
+            throw new HttpException('Користувач з такою поштою не знайдений', HttpStatus.NOT_FOUND)
         }
-        const passwordEquals = await bcrypt.compare(userDto.password, user.password)
-        if (user && passwordEquals) {
-            return user
-        } else {
-            throw new UnauthorizedException({message: "Неправильна пошта або пароль "})
+        const isPassEquals = await bcrypt.compare(password, user.password);
+        if (!isPassEquals) {
+            throw new HttpException('Пароль неправильний!', HttpStatus.BAD_REQUEST);
         }
 
+        const userDto = new UserDto(user)
+        const tokens = this.tokenService.generateTokens({...userDto});
+
+        await this.tokenService.saveToken( userDto.id,tokens.refreshToken);
+        return {...tokens, user}
+    }
+
+    async logout(refreshToken) {
+        const token = await this.tokenService.removeToken(refreshToken);
+        return token;
+    }
+
+    async refresh(refreshToken) {
+        if (!refreshToken) {
+            throw new HttpException("Не авторизований користувач", HttpStatus.UNAUTHORIZED)
+        }
+
+        const userData = await this.tokenService.validateRefreshToken(refreshToken);
+        const tokenFromDb = await this.tokenService.findToken(refreshToken);
+
+        if (!userData || !tokenFromDb) {
+            throw new HttpException("Не авторизований користувач ", HttpStatus.UNAUTHORIZED)
+        }
+
+        const user = await this.userService.getUserByPk(userData.id);
+        const userDto = new UserDto(user)
+
+        const tokens = this.tokenService.generateTokens({...userDto});
+        console.log(tokens.refreshToken)
+
+        await this.tokenService.saveToken(userDto.id,tokens.refreshToken);
+
+        return {...tokens, user}
     }
 
 }

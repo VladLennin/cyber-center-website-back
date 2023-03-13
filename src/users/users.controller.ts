@@ -25,7 +25,6 @@ export class UsersController {
     @ApiOperation({summary: "Отримати усіх користувачів"})
     @ApiResponse({status: 200, type: [User]})
     @Roles("ADMIN")
-    @UseGuards(RolesGuard)
     @Post()
     getAllUsers() {
         return this.usersService.getUsers();
@@ -34,7 +33,6 @@ export class UsersController {
     @ApiOperation({summary: "Видати роль"})
     @ApiResponse({status: 200, type: [User]})
     @Roles("ADMIN")
-    @UseGuards(RolesGuard)
     @Post("/role")
     addRole(@Body() dto: AddRoleDto) {
         return this.usersService.addRole(dto);
