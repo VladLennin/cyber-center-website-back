@@ -55,7 +55,7 @@ export class AuthService {
 
     async refresh(refreshToken) {
         if (!refreshToken) {
-            throw new HttpException("Не авторизований користувач", HttpStatus.UNAUTHORIZED)
+            throw new HttpException("Не авторизований користувач 1", HttpStatus.UNAUTHORIZED)
         }
 
         const userData = await this.tokenService.validateRefreshToken(refreshToken);
@@ -69,7 +69,6 @@ export class AuthService {
         const userDto = new UserDto(user)
 
         const tokens = this.tokenService.generateTokens({...userDto});
-        console.log(tokens.refreshToken)
 
         await this.tokenService.saveToken(userDto.id,tokens.refreshToken);
 

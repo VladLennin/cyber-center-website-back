@@ -12,6 +12,26 @@ export class UsersService {
                 private roleService: RolesService) {
     }
 
+    async editUser(userId: number, field: string, value: any) {
+
+        if (field === "email") {
+            const candidate = await this.userRepository.findOne({where: {email: value}})
+            if (candidate) {
+                throw new HttpException("Користувач з такою поштою вже існує", HttpStatus.BAD_REQUEST)
+            }
+        }
+
+        const user = await this.getUserByPk(userId);
+        if (!user) {
+            throw new HttpException("Такого користувача не інсує", HttpStatus.BAD_REQUEST)
+        }
+
+        user[field] = value
+        return user.save()
+
+
+    }
+
     async createUser(dto: CreateUserDto) {
         console.log(dto)
         const user = await this.userRepository.create(dto)
@@ -31,8 +51,8 @@ export class UsersService {
         return user
     }
 
-    async getUserByPk(id: string) {
-        const user = await this.userRepository.findByPk(id)
+    async getUserByPk(id: number) {
+        const user = await this.userRepository.findByPk(id, {include: {all: true}})
         return user
     }
 
@@ -45,7 +65,6 @@ export class UsersService {
             return dto
         }
         throw new HttpException("Користувач або роль не знайдені", HttpStatus.NOT_FOUND)
-
     }
 
 

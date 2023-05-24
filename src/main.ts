@@ -2,16 +2,18 @@ import * as process from "process";
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
-import {ValidationPipe} from "./pipes/validation.pipe";
 import * as cookieParser from 'cookie-parser';
 
 async function start() {
     const PORT = process.env.PORT || 3001
     const app = await NestFactory.create(AppModule)
     app.enableCors({
-        origin: ["http://127.0.0.1:3000","http://localhost:3000"],
-
+        origin:true,
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
+        preflightContinue: false,
+        optionsSuccessStatus: 200,
     });
     const config = new DocumentBuilder()
         .setTitle("WebSite Endpoints")

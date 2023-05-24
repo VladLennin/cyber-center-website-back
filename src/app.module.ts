@@ -9,9 +9,13 @@ import {Role} from "./roles/roles.model";
 import {UserRoles} from "./roles/user-roles.model";
 import {AuthModule} from './auth/auth.module';
 import {NewsModule} from './news/news.module';
-import {JwtModule} from "@nestjs/jwt";
-import { TokenModule } from './token/token.module';
+import {TokenModule} from './token/token.module';
 import {Token} from "./token/token.model";
+import {UnitModule} from './unit/unit.module';
+import {PzModule} from './pz/pz.module';
+import {Unit} from "./unit/unit.model";
+import {Pz} from "./pz/pz.model";
+import {News} from "./news/news.model";
 
 
 @Module({
@@ -27,7 +31,7 @@ import {Token} from "./token/token.model";
             username: process.env.POSTGRES_USER,
             password: String(process.env.POSTGRES_PASSWORD),
             database: process.env.POSTGRES_DB,
-            models: [User, Role, UserRoles, Token],
+            models: [User, Role, UserRoles, Token,Unit,Pz, News],
             autoLoadModels: true,
             logging: false
         }),
@@ -35,7 +39,9 @@ import {Token} from "./token/token.model";
         RolesModule,
         AuthModule,
         NewsModule,
-        TokenModule
+        TokenModule,
+        UnitModule,
+        PzModule
     ],
 })
 export class AppModule {

@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Post, Req, Res, UseGuards} from '@nestjs/common';
 import {UsersService} from "./users.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {User} from "./users.model";
@@ -15,13 +15,6 @@ export class UsersController {
     constructor(private usersService: UsersService) {
     }
 
-    // @ApiOperation({summary: "Створення користувача"})
-    // @ApiResponse({status: 200, type: User})
-    // @Post()
-    // createUser(@Body() dto: CreateUserDto) {
-    //     return this.usersService.createUser(dto);
-    // }
-
     @ApiOperation({summary: "Отримати усіх користувачів"})
     @ApiResponse({status: 200, type: [User]})
     @Roles("ADMIN")
@@ -36,6 +29,14 @@ export class UsersController {
     @Post("/role")
     addRole(@Body() dto: AddRoleDto) {
         return this.usersService.addRole(dto);
+    }
+
+    @Post("edit")
+    editUser(@Req() req, @Res() res) {
+        const userId = req.body.userId;
+        const value = req.body.value;
+        const field = req.body.field;
+        return this.usersService.editUser(userId, field, value)
     }
 
 }

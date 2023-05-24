@@ -51,6 +51,7 @@ export class TokenService {
 
     async removeToken(refreshToken) {
         const tokenData = await this.tokenRepository.destroy({where: {refreshToken: refreshToken}})
+        console.log(tokenData)
         return tokenData;
     }
 
