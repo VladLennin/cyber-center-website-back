@@ -27,8 +27,8 @@ export class AuthService {
         const userDto = new UserDto(user)
         const tokens = this.tokenService.generateTokens({...userDto});
         await this.tokenService.saveToken(userDto.id,tokens.refreshToken);
-
-        return {...tokens, user}
+        console.log(user," asd asd asd asd")
+        return {...tokens, user, status:HttpStatus.OK}
     }
 
     async login(email, password) {

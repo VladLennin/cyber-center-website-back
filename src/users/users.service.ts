@@ -19,7 +19,17 @@ export class UsersService {
             if (candidate) {
                 throw new HttpException("Користувач з такою поштою вже існує", HttpStatus.BAD_REQUEST)
             }
+            const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+            if (!emailRegex.test(value)) {
+                throw new HttpException('Некоректна пошта', HttpStatus.BAD_REQUEST);
+            }
         }
+
+        if (value === "") {
+            throw new HttpException("Значення за мале", HttpStatus.BAD_REQUEST)
+        }
+
 
         const user = await this.getUserByPk(userId);
         if (!user) {
@@ -28,8 +38,6 @@ export class UsersService {
 
         user[field] = value
         return user.save()
-
-
     }
 
     async createUser(dto: CreateUserDto) {

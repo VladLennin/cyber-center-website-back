@@ -14,21 +14,20 @@ interface PzCreationAttrs {
     tableName: "pz"
 })
 export class Pz extends Model<Pz, PzCreationAttrs> {
-    @ApiProperty({example: "1", description: "Унікальний ідентифікатор"})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    @ApiProperty({example: "Windows 7", description: "Для якої системи"})
     @Column({type: DataType.STRING, allowNull: false})
-    typeFor: string;
+    os: string;
 
-    @ApiProperty({example: "АСУ-Дніпро", description: "Тип мережі"})
     @Column({type: DataType.STRING, allowNull: false})
     network: string;
 
-    @ApiProperty({example: "uploads/some.exe", description: "Ссилка на скачування"})
     @Column({type: DataType.STRING, allowNull: false})
     src: string;
+
+    @Column({type: DataType.STRING, allowNull: false})
+    name: string;
 
     @ForeignKey(() => Unit)
     @Column({type: DataType.INTEGER})

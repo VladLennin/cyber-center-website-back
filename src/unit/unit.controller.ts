@@ -2,29 +2,28 @@ import {Body, Controller, Get, Post, Req, Res} from '@nestjs/common';
 import {UnitService} from "./unit.service";
 import {AddPzDto} from "../pz/dto/add-pz.dto";
 
-@Controller('unit')
+@Controller()
 export class UnitController {
-
-    //test
-
     constructor(private unitService: UnitService) {
     }
 
-    @Post()
+    @Post("unit")
     async createUnit(@Req() req) {
         const name = req.body.unit.name;
         console.log(name)
         return await this.unitService.createUnit(name)
     }
 
-    @Get()
+    @Get("unit")
     async getUnits(@Res() res) {
         res.send(await this.unitService.getAll())
     }
 
-    @Post("/add-pz")
-    async addPz(@Body("unitId") unitId: number, @Body("addPzDto") addPzDto: AddPzDto) {
-        return await this.unitService.addPz(unitId, addPzDto)
+    @Post("admin/ant-pz")
+    async addPz(@Req() req) {
+        const pz = req.body.pz
+        const unitId = req.body.unitId
+        return await this.unitService.addPz(pz, unitId)
     }
 
 }

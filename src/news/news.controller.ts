@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Req, Res} from '@nestjs/common';
+import {Controller, Get, HttpStatus, Param, Post, Query, Req, Res} from '@nestjs/common';
 import {UsersService} from "../users/users.service";
 import {NewsService} from "./news.service";
 
@@ -9,15 +9,33 @@ export class NewsController {
     }
 
     @Post("admin/news")
-    addNews(@Req() req, @Res() res) {
-        const newsDto = req.body;
-        console.log(req.body)
-        return this.newsService.addNews(newsDto)
+    addNews(@Req() req) {
+        const newsDto = req.body
+        return this.newsService.addNews(newsDto);
     }
 
     @Post("news")
     getNews(@Req() req) {
         return this.newsService.getNews(req.body.count);
     }
+
+    @Post("news/paginated")
+    getNewsPaginated(@Req() req) {
+        const page = req.body.page;
+        const limit = req.body.limit;
+        const offset = (page - 1) * limit;
+        return this.newsService.getNewsPaginated(offset, limit);
+    }
+
+    @Get("news/count")
+    getCountNews() {
+        return this.newsService.getCountNews();
+    }
+
+    @Get("news")
+    getNEwsById(@Query('id') id: number,) {
+        return this.newsService.getNewsById(id)
+    }
+
 
 }

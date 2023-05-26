@@ -11,8 +11,11 @@ export class PzService {
 
     async createPz(dto: AddPzDto) {
         const pz = await this.pzRepository.create(dto);
-        console.log(pz)
-        return pz
+        const id = pz.id
+        pz.src = `ant_pz_${id}.${pz.src}`
+       const updatedPz = await pz.save()
+        return updatedPz
     }
+
 
 }

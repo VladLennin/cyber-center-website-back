@@ -24,19 +24,20 @@ export class UnitService {
         return await this.unitRepository.findAll({include: {all: true}})
     }
 
-    async addPz(id: number, dto: AddPzDto) {
-        const unit = await this.unitRepository.findByPk(id, {include: {all: true}})
+    async addPz(pzDto: AddPzDto, unitId: number) {
+        console.log(unitId)
+        const unit = await this.unitRepository.findByPk(unitId, {include: {all: true}})
+        console.log(unit)
         if (!unit) {
             throw new HttpException("Такого підрозділу не існує", HttpStatus.NOT_FOUND)
         }
 
-        const pz = await this.pzService.createPz(dto)
+        const pz = await this.pzService.createPz(pzDto)
         if (!pz) {
             throw new HttpException("При створенні ПЗ виникла помилка", HttpStatus.INTERNAL_SERVER_ERROR)
         }
         await unit.$add('pz', pz.id)
-        const unitUpd = await this.unitRepository.findByPk(id, {include: {all: true}})
-        return unitUpd;
+        return pz;
     }
 
 

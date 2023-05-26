@@ -1,6 +1,7 @@
 export interface AddPzDto {
-    typeFor: string;
+    os: string;
     network: string;
     src: string;
-
+    unitId: number;
+    name:string;
 }

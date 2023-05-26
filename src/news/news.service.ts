@@ -15,12 +15,28 @@ export class NewsService {
         return news;
     }
 
-    async getNews(count:number) {
+    async getNews(count: number) {
         const news = await this.newsRepository.findAll({
             limit: count,
             order: [[Sequelize.col("date"), 'DESC']],
         })
         return news;
+    }
+
+    async getNewsPaginated(offset: number, limit: number) {
+        return await this.newsRepository.findAll({
+            offset,
+            limit,
+            order: [['createdAt', 'DESC']]
+        })
+    }
+
+    async getCountNews() {
+        return await this.newsRepository.count()
+    }
+
+    async getNewsById(id: number) {
+        return await this.newsRepository.findByPk(id)
     }
 
 }
