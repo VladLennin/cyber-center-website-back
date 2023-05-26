@@ -10,10 +10,10 @@ import {Unit} from "./unit.model";
     providers: [UnitService],
     controllers: [UnitController],
     imports: [
-        SequelizeModule.forFeature([Unit,Pz]),
-        forwardRef(() =>PzModule)
+        SequelizeModule.forFeature([Unit, Pz]),
+        forwardRef(() => PzModule)
     ],
-    exports:[
+    exports: [
         UnitService
     ]
 })
