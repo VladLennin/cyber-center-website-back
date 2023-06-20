@@ -31,4 +31,12 @@ export class UpdPzService {
             throw e
         }
     }
+
+    async getAllUpdPz(){
+        try{
+            return await this.updPzRepository.findAll()
+        }catch(e){
+            throw e
+        }
+    }
 }

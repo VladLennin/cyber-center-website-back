@@ -19,5 +19,10 @@ export class UpdPzController{
         return this.updPzService.getAllPrograms()
     }
 
+    @Get("upd-pz")
+    getAllUpdPz(){
+        return this.updPzService.getAllUpdPz()
+    }
+
 
 }
