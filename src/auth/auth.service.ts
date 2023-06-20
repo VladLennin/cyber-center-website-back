@@ -26,9 +26,8 @@ export class AuthService {
 
         const userDto = new UserDto(user)
         const tokens = this.tokenService.generateTokens({...userDto});
-        await this.tokenService.saveToken(userDto.id,tokens.refreshToken);
-        console.log(user," asd asd asd asd")
-        return {...tokens, user, status:HttpStatus.OK}
+        await this.tokenService.saveToken(userDto.id, tokens.refreshToken);
+        return {...tokens, user, status: HttpStatus.OK}
     }
 
     async login(email, password) {
@@ -44,7 +43,7 @@ export class AuthService {
         const userDto = new UserDto(user)
         const tokens = this.tokenService.generateTokens({...userDto});
 
-        await this.tokenService.saveToken( userDto.id,tokens.refreshToken);
+        await this.tokenService.saveToken(userDto.id, tokens.refreshToken);
         return {...tokens, user}
     }
 
@@ -70,7 +69,7 @@ export class AuthService {
 
         const tokens = this.tokenService.generateTokens({...userDto});
 
-        await this.tokenService.saveToken(userDto.id,tokens.refreshToken);
+        await this.tokenService.saveToken(userDto.id, tokens.refreshToken);
 
         return {...tokens, user}
     }

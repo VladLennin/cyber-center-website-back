@@ -10,18 +10,15 @@ export class RolesService {
     }
 
     async createRole(dto: CreateRoleDto) {
-        const role = await this.roleRepository.create(dto)
-        return role
+        return await this.roleRepository.create(dto)
     }
 
     async getRoleByValue(value: string) {
-        const role = await this.roleRepository.findOne({where: {value}})
-        return role
+        return await this.roleRepository.findOne({where: {value}})
     }
 
     async getAllRoles() {
-        const roles = await this.roleRepository.findAll()
-        return roles
+        return await this.roleRepository.findAll()
     }
 
 }

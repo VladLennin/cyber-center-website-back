@@ -1,33 +1,36 @@
 import * as process from "process";
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
-import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import * as cookieParser from 'cookie-parser';
+import * as fs from "fs";
 
 async function start() {
     const PORT = process.env.PORT || 3001
-    const app = await NestFactory.create(AppModule)
+
+    const httpsOptions = {
+        key: fs.readFileSync('/Users/vladlenmarchenko/WebstormProjects/cyber-center/cyber-center-website-back/src/secrets/key.pem'),
+        cert: fs.readFileSync('/Users/vladlenmarchenko/WebstormProjects/cyber-center/cyber-center-website-back/src/secrets/certificate.pem'),
+    };
+
+    const app =  await NestFactory.create(AppModule,{
+        httpsOptions
+    })
+
     app.enableCors({
-        origin:true,
+        origin:["https://localhost:3000", "https://10.5.113.112:3000"],
         methods: ['GET', 'POST'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
+        allowedHeaders: ['Content-Type', 'Authorization','Access-Control-Allow-Origin'],
         credentials: true,
         preflightContinue: false,
         optionsSuccessStatus: 200,
+
     });
-    const config = new DocumentBuilder()
-        .setTitle("WebSite Endpoints")
-        .setDescription("REST API documentation for Cyber Center WebSite")
-        .setVersion("1.0.0")
-        .addTag("Developer - Vladlen Marchenko")
-        .build()
+
 
 
     // app.useGlobalPipes(new ValidationPipe())
     app.setGlobalPrefix('api');
     app.use(cookieParser());
-    const document = SwaggerModule.createDocument(app, config)
-    SwaggerModule.setup("/api/docs", app, document)
 
     await app.listen(PORT, () => {
         console.log(`Server is running on ${PORT} port`)

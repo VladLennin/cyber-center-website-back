@@ -33,7 +33,7 @@ export class NewsController {
     }
 
     @Get("news")
-    getNEwsById(@Query('id') id: number,) {
+    getNewsById(@Query('id') id: number,) {
         return this.newsService.getNewsById(id)
     }
 

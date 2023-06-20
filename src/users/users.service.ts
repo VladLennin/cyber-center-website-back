@@ -75,5 +75,17 @@ export class UsersService {
         throw new HttpException("Користувач або роль не знайдені", HttpStatus.NOT_FOUND)
     }
 
+    async getUsersPaginated(offset: number, limit: any) {
+        return await this.userRepository.findAll({
+            offset,
+            limit,
+            order: [['createdAt', 'DESC']]
+        })
+    }
+
+    async getCountUsers() {
+        return await this.userRepository.count()
+    }
+
 
 }

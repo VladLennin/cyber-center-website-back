@@ -29,4 +29,24 @@ export class UsersController {
         return this.usersService.editUser(userId, field, value)
     }
 
+    @Post("/pk")
+    getUserByPk(@Req() req){
+        const id = req.body.userId;
+        return this.usersService.getUserByPk(id)
+    }
+
+    @Post("/paginated")
+    getNewsPaginated(@Req() req) {
+        const page = req.body.page;
+        const limit = req.body.limit;
+        const offset = (page - 1) * limit;
+        return this.usersService.getUsersPaginated(offset, limit);
+    }
+
+    @Get("/count")
+    getCountNews() {
+        return this.usersService.getCountUsers();
+    }
+
+
 }

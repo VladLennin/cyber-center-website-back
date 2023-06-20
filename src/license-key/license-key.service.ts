@@ -6,7 +6,8 @@ import {User} from "../users/users.model";
 @Injectable()
 export class LicenseKeyService {
 
-    constructor(@InjectModel(License) private licenseRepository: typeof License) {
+    constructor(@InjectModel(License) private licenseRepository: typeof License,
+                @InjectModel(User) private userRepository: typeof User) {
     }
 
 
@@ -28,7 +29,40 @@ export class LicenseKeyService {
         }
     }
 
-    async getAllRequests(){
-        return await this.licenseRepository.findAll()
+    async getAllRequests() {
+        return await this.licenseRepository.findAll({order: [['status', 'ASC']]})
+    }
+
+    async getUserFromRequest(userId: number) {
+        return await this.userRepository.findByPk(userId)
+    }
+
+    async rejectLicense(licenseId: number, userAllowedId: number) {
+        const license = await this.licenseRepository.findByPk(licenseId)
+        license.allowedById = userAllowedId;
+        license.status = "Відхилено"
+        await license.save()
+        return license
+    }
+
+    async acceptLicense(licenseId: number, userAllowedId: number, key: string) {
+        const license = await this.licenseRepository.findByPk(licenseId)
+        license.allowedById = userAllowedId
+        license.key = key;
+        license.status = "Підтверджено"
+        await license.save()
+        return license
+    }
+
+    async getLicensePaginated(offset: number, limit: any) {
+        return await this.licenseRepository.findAll({
+            offset,
+            limit,
+            order: [['createdAt', 'DESC']]
+        })
+    }
+
+    async getCountLicenses() {
+        return await this.licenseRepository.count()
     }
 }

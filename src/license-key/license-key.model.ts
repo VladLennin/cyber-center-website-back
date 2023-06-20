@@ -12,7 +12,7 @@ export class License extends Model<License, LicenseCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false, defaultValue: "Відправлено"})
     status: string;
 
-    @Column({type: DataType.STRING, defaultValue:""})
+    @Column({type: DataType.STRING, defaultValue:"none"})
     key: string;
 
     @ForeignKey(() => User)
