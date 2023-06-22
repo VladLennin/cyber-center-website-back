@@ -9,23 +9,33 @@ interface NewsCreationAttrs {
 }
 
 @Table({
-    tableName: "news"
+    tableName: "news",
+    timestamps: false
 })
 export class News extends Model<News, NewsCreationAttrs> {
     @Column({type: DataType.INTEGER, primaryKey: true, autoIncrement: true, unique: true})
-    id: number
+    id: number;
 
-    @Column({type: DataType.STRING, allowNull: false})
-    imgHref: string;
+    @Column({type:DataType.TEXT})
+    hashed_link:string;
+
+    @Column({type: DataType.TEXT, allowNull: false})
+    img_href: string;
 
     @Column({type: DataType.TEXT, allowNull: false})
     content: string;
 
-    @Column({type: DataType.STRING, allowNull: false})
-    name: string;
+    @Column({type: DataType.TEXT, allowNull: false})
+    title: string;
 
     @Column({type: DataType.DATE, allowNull: false})
-    date: Date;
+    date_pub: Date;
+
+    @Column({type:DataType.DATE, allowNull:false})
+    created_at:Date;
+
+    @Column({type:DataType.TEXT, allowNull:false})
+    description:string;
 
 
 }

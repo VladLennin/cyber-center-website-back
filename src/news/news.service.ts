@@ -18,7 +18,7 @@ export class NewsService {
     async getNews(count: number) {
         const news = await this.newsRepository.findAll({
             limit: count,
-            order: [[Sequelize.col("date"), 'DESC']],
+            order: [[Sequelize.col("date_pub"), 'DESC']],
         })
         return news;
     }
@@ -27,7 +27,7 @@ export class NewsService {
         return await this.newsRepository.findAll({
             offset,
             limit,
-            order: [['createdAt', 'DESC']]
+            order: [['created_at', 'DESC']]
         })
     }
 
