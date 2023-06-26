@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {News} from "./news.model";
 import {CreateNewsDto} from "../news/dto/create-news.dto";
-import {Sequelize} from "sequelize";
+import {Op, Sequelize} from "sequelize";
 
 @Injectable()
 export class NewsService {
@@ -39,4 +39,26 @@ export class NewsService {
         return await this.newsRepository.findByPk(id)
     }
 
+    async getSearchedNews(searchString: string, all: boolean) {
+        if (all) {
+            return await this.newsRepository.findAll({
+                order: [['created_at', 'DESC']],
+                where: {
+                    title: {
+                        [Op.iLike]: `%${searchString}%`
+                    }
+                }
+            })
+        } else {
+            return await this.newsRepository.findAll({
+                limit: 5,
+                order: [['created_at', 'DESC']],
+                where: {
+                    title: {
+                        [Op.iLike]: `%${searchString}%`
+                    }
+                }
+            })
+        }
+    }
 }

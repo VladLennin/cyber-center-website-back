@@ -14,6 +14,7 @@ export class NewsController {
     @Post("admin/news")
     addNews(@Req() req) {
         const newsDto = req.body
+        console.log(newsDto)
         return this.newsService.addNews(newsDto);
     }
 
@@ -38,6 +39,13 @@ export class NewsController {
     @Get("news")
     getNewsById(@Query('id') id: number,) {
         return this.newsService.getNewsById(id)
+    }
+
+    @Post("news/search")
+    getSearchedNews(@Req() req){
+        const searchString = req.body.searchString;
+        const all = req.body.all
+        return this.newsService.getSearchedNews(searchString, all)
     }
 
 
