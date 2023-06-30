@@ -22,6 +22,10 @@ import {FishingModule} from "./fishing/fishing.module";
 import {Fishing} from "./fishing/fishing.model";
 import {UpdPz} from "./updPz/updPz.model";
 import {UpdPzModule} from "./updPz/updPz.module";
+import {CourseModule} from "./course/course.module";
+import {Course} from "./course/course.model";
+import {Question} from "./course/question.model";
+import {Answer} from "./course/answer.model";
 
 
 @Module({
@@ -37,7 +41,7 @@ import {UpdPzModule} from "./updPz/updPz.module";
             username: process.env.POSTGRES_USER,
             password: String(process.env.POSTGRES_PASSWORD),
             database: process.env.POSTGRES_DB,
-            models: [User, Role, UserRoles, Token, Unit, Pz, News, License, Fishing, UpdPz],
+            models: [User, Role, UserRoles, Token, Unit, Pz, News, License, Fishing, UpdPz, Course, Question, Answer],
             autoLoadModels: true,
             logging: false
         }),
@@ -50,7 +54,8 @@ import {UpdPzModule} from "./updPz/updPz.module";
         PzModule,
         LicenseKeyModule,
         FishingModule,
-        UpdPzModule
+        UpdPzModule,
+        CourseModule
     ],
 })
 export class AppModule {

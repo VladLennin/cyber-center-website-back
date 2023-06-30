@@ -4,6 +4,7 @@ import {Role} from "../roles/roles.model";
 import {UserRoles} from "../roles/user-roles.model";
 import {Pz} from "../pz/pz.model";
 import {Token} from "../token/token.model";
+import {Course} from "../course/course.model";
 
 interface UserCreationAttrs {
     email: string;
@@ -46,6 +47,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
     @BelongsToMany(() => Role, () => UserRoles)
     roles: Role[]
+
+    @HasMany(() => Course)
+    courses: Course[]
 
     @HasOne(() => Token)
     token: Token
