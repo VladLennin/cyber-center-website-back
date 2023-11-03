@@ -1,7 +1,6 @@
 import {Module} from "@nestjs/common";
 import {UsersModule} from './users/users.module';
 import {ConfigModule} from "@nestjs/config";
-import * as process from "process";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {User} from "./users/users.model";
 import {RolesModule} from './roles/roles.module';

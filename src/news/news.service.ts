@@ -6,7 +6,6 @@ import {Op, Sequelize} from "sequelize";
 
 @Injectable()
 export class NewsService {
-
     constructor(@InjectModel(News) private newsRepository: typeof News) {
     }
 
@@ -15,9 +14,9 @@ export class NewsService {
         return news;
     }
 
-    async getNews(count: number) {
+    async getNews() {
         const news = await this.newsRepository.findAll({
-            limit: count,
+            limit: 10,
             order: [[Sequelize.col("date_pub"), 'DESC']],
         })
         return news;

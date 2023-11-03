@@ -7,10 +7,6 @@ export class NewsController {
     constructor(private newsService: NewsService) {
     }
 
-
-
-
-
     @Post("admin/news")
     addNews(@Req() req) {
         const newsDto = req.body
@@ -18,9 +14,10 @@ export class NewsController {
         return this.newsService.addNews(newsDto);
     }
 
-    @Post("news")
-    getNews(@Req() req) {
-        return this.newsService.getNews(req.body.count);
+    @Get("news")
+    getNews() {
+        console.log("some")
+        return this.newsService.getNews();
     }
 
     @Post("news/paginated")
@@ -33,10 +30,11 @@ export class NewsController {
 
     @Get("news/count")
     getCountNews() {
+        console.log("catched")
         return this.newsService.getCountNews();
     }
 
-    @Get("news")
+    @Get("news/some")
     getNewsById(@Query('id') id: number,) {
         return this.newsService.getNewsById(id)
     }
