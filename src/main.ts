@@ -4,7 +4,7 @@ import {AppModule} from "./app.module";
 import * as cookieParser from 'cookie-parser';
 
 async function start() {
-    const PORT = process.env.PORT || 3001
+    const PORT = process.env.PORT || 15001
 
     // const httpsOptions = {
     //     key: fs.readFileSync('/Users/vladlenmarchenko/WebstormProjects/cyber-center/cyber-center-website-back/src/secrets/key.pem'),
@@ -14,8 +14,8 @@ async function start() {
     const app = await NestFactory.create(AppModule)
 
     app.enableCors({
-        origin:["http://localhost:3000", "http://10.5.113.113:3000","http://10.5.113.113:19000", "http://localhost:19006"],
-        // origin: true,
+        // origin:["http://localhost:3000", "http://10.5.113.113:3000","http://10.5.113.113:19000", "http://localhost:19006"],
+        origin: true,
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
         credentials: true,
