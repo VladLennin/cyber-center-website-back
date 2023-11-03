@@ -35,11 +35,11 @@ import {Answer} from "./course/answer.model";
         }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
-            host: process.env.POSTGRES_HOST,
-            port: Number(process.env.POSTGRES_PORT),
-            username: process.env.POSTGRES_USER,
-            password: String(process.env.POSTGRES_PASSWORD),
-            database: process.env.POSTGRES_DB,
+            host: process.env.DB_HOST,
+            port: Number(process.env.DB_PORT),
+            username: process.env.DB_USERNAME,
+            password: String(process.env.DB_PASSWORD),
+            database: process.env.DB_NAME,
             models: [User, Role, UserRoles, Token, Unit, Pz, News, License, Fishing, UpdPz, Course, Question, Answer],
             autoLoadModels: true,
             logging: false
