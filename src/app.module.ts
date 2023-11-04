@@ -27,6 +27,9 @@ import {Question} from "./course/question.model";
 import {Answer} from "./course/answer.model";
 
 
+console.log(process.env.DB_USERNAME)
+console.log(process.env.DB_NAME)
+
 @Module({
     controllers: [],
     imports: [
