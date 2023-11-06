@@ -33,9 +33,9 @@ console.log(process.env.DB_NAME)
 @Module({
     controllers: [],
     imports: [
-        // ConfigModule.forRoot({
-        //     envFilePath: `.${process.env.NODE_ENV}.env`
-        // }),
+        ConfigModule.forRoot({
+            envFilePath: `.${process.env.NODE_ENV}.env`
+        }),
         SequelizeModule.forRoot({
             dialect: 'postgres',
             host: process.env.DB_HOST,

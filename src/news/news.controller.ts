@@ -34,8 +34,8 @@ export class NewsController {
         return this.newsService.getCountNews();
     }
 
-    @Get("news/some")
-    getNewsById(@Query('id') id: number,) {
+    @Get("news/:id")
+    getNewsById(@Param('id') id: number,) {
         return this.newsService.getNewsById(id)
     }
 
